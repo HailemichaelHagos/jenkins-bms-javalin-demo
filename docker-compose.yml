@@ -1,0 +1,21 @@
+version: '3'
+services:
+  my-postgres:
+    image: postgres
+    ports:
+      - "8888:5432"
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+    volumes:
+      - ./dbscript:/docker-entrypoint-initdb.d
+  javalin-backend-service:
+    image: javalin-backend
+    build: .
+    ports:
+      - 9999:4040
+    depends_on:
+      - my-postgres
+    links:
+      - my-postgres
+ 
+  
